@@ -12,14 +12,13 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class AStarPanel extends JPanel implements MouseListener{
-	static TileMap tileMap = new TileMap("tilemap.txt");//file chua ma tran de tao gridmap
+	static TileMap tileMap = new TileMap();//file chua ma tran de tao gridmap
 	private Tile[][] tile = tileMap.getTile(); //mang cac tile coi nhu 1 nut
-	JButton start = new JButton();
 	Node startNode = new Node(500,500); Node endNode = new Node(300,300);
 	HybridAstar hybridAstar = new HybridAstar(startNode,endNode);
 	public AStarPanel() {
 		setLayout(null);
-		setSize(1000,600);
+		setSize(800,600);
 		setFocusable(true);
 		setVisible(true);
 		addMouseListener(this);
@@ -29,16 +28,6 @@ public class AStarPanel extends JPanel implements MouseListener{
 			}
 		});
 		timer.start();
-		start.setText("START");
-		start.setBounds(850, 50, 100, 25);
-		start.setVisible(true);
-		start.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new Distance(endNode);
-				hybridAstar.setTimer(startNode,endNode);
-			}
-		});
-		add(start);
 	}
 	//ve len frame
 	@Override

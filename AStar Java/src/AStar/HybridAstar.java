@@ -14,6 +14,9 @@ public class HybridAstar {
 	double steeringAngle[] = {0,Pi/18,-Pi/18,Pi/9,-Pi/9,Pi/6,-Pi/6};
 	static final double Pi = Math.PI;
 	static final double v = 4;
+	static final double l = 5;
+	AStarPanel MainPanel = AStar.MainPanel;
+	ObstacleDistance obstacleDistance = new ObstacleDistance();
 	Timer AStimer;
 	Node temp = null;
 	boolean stop = false;
@@ -29,7 +32,8 @@ public class HybridAstar {
 				if(open.peek() != null && !stop) {
 					if (open.peek()==null) stop = true;
 					temp = getMin();
-					if(temp.getInTile(AStarPanel.tileMap).compare(end.getInTile(AStarPanel.tileMap))) {
+//					if(temp.getInTile(MainPanel.tileMap).compare(end.getInTile(MainPanel.tileMap))) {
+					if(temp.distance(end)<4) {
 						stop = true;
 						addPath(temp);
 					}
@@ -46,12 +50,13 @@ public class HybridAstar {
 		close.clear();
 		path.clear();
 		AStimer.stop();
+		stop = false;
 	}
 	public void addNode(Node temp,Node end) {
 		Node next;
 		for(int i = 0;i<steeringAngle.length;i++) {
-			next = temp.next(v, 5, steeringAngle[i]);
-			if (checkNotContains(next) && next.getInTile(AStarPanel.tileMap).checkMovable()) {
+			next = temp.next(steeringAngle[i]);
+			if (checkNotContains(next) && obstacleDistance.getMinDistance(next)>20) {
 				calculate(temp,next,end);
 				open.add(next);
 			}

@@ -3,9 +3,10 @@ package AStar;
 import java.util.LinkedList;
 
 public class Distance {//Tinh khoang cach tu diem goal den cac node
-	int d = 30;
+	int d = 50;
 	Tile end;
-	TileMap tileMap = AStarPanel.tileMap;
+	AStarPanel MainPanel = AStar.MainPanel;
+	TileMap tileMap = MainPanel.tileMap;
 	private Tile[][] tile = tileMap.getTile();
 	LinkedList <Tile> open = new LinkedList<>();
 	LinkedList <Tile> close = new LinkedList<>();

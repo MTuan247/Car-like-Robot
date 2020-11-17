@@ -20,7 +20,6 @@ public class Tile {
 		if((this.getI()==goal.getI())&&(this.getJ()==goal.getJ())) return true;
 		return false;
 	}
-	
 	public double getD() {
 		return d;
 	}

@@ -1,10 +1,15 @@
 package AStar;
 
 public class Node {
+	AStarPanel MainPanel = AStar.MainPanel;
 	private int x,y;
 	private double theta;
 	private double f,h;
 	private double g;
+	double v = HybridAstar.v;
+	double l = HybridAstar.l;
+	double Pi = HybridAstar.Pi;
+	private double maxDeltaTheta = v*Math.tan(Pi/6)/l;
 	private Node Prev = null;
 	public Node(int x,int y) {
 		this.x = x;
@@ -35,12 +40,12 @@ public class Node {
 //		}
 //		return node;
 //	}
-	public Node next(double v, int l, double steeringAngle) {//tinh x,y,theta cua diem tiep theo
+	public Node next(double steeringAngle) {//tinh x,y,theta cua diem tiep theo
 		Node node = null;
 		double deltaTheta = v*Math.tan(steeringAngle)/l;
 		double nextTheta = (theta + deltaTheta);
-		if(nextTheta > 3.14) nextTheta-=3.14;
-		if(nextTheta < -3.14) nextTheta+=3.14;
+		if(nextTheta > Pi) nextTheta-=2*Pi;
+		if(nextTheta < -Pi) nextTheta+=2*Pi;
 		int nextX = (int) (x + v*Math.cos(theta));
 		int nextY = (int) (y + v*Math.sin(theta));
 		if((nextX<800)&&(nextY<600)&&(nextX>0)&&(nextY>0)) {
@@ -59,17 +64,23 @@ public class Node {
 		h = Math.sqrt((endX - x)*(endX -x)+(endY-y)*(endY-y));
 		return h;
 	}
+	public double distance(Node end) {//tinh h(X)
+		int endX = end.getX();
+		int endY = end.getY();
+		h = Math.sqrt((endX - x)*(endX -x)+(endY-y)*(endY-y));
+		return h;
+	}
 	public boolean compareNode(Node node) {
 		int deltaX = Math.abs(node.getX()-x);
 		int deltaY = Math.abs(node.getY()-y);
-		double deltaAlpha = Math.abs(node.getAlpha()-theta);
-		if (deltaX<4 && deltaY<4 && deltaAlpha<Math.PI/15) {
+		double deltaAlpha = Math.abs(node.getTheta()-theta);
+		if (deltaX<4 && deltaY<4 && deltaAlpha<Math.PI/20) {
 			return true;
 		}
 		return false;
 	}
 	public double f(Node end) {
-		f = g + h(end)+this.getInTile(AStarPanel.tileMap).getD();
+		f = g + h(end)+this.getInTile(MainPanel.tileMap).getD();
 		return f;
 	}
 	public void setG(double g) {
@@ -102,10 +113,10 @@ public class Node {
 	public void setPrev(Node prev) {
 		Prev = prev;
 	}
-	public double getAlpha() {
+	public double getTheta() {
 		return theta;
 	}
-	public void setAlpha(double alpha) {
+	public void setTheta(double alpha) {
 		this.theta = alpha;
 	}
 	

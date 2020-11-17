@@ -2,29 +2,22 @@ package AStar;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 public class TileMap {
-	int TileWidth=25;
-	int TileHeight=25;
 	int row = 24; int col = 32; //row la hang, col la cot
 	Tile tile[][]= new Tile [row][col];
-	public Tile[][] getTile() {
-		return tile;
-	}
+	int TileWidth=25;
+	int TileHeight=25;
 	//tao map chua cac tile 
 	//thong tin map lay tu file
-	public TileMap(String s) {
+	public TileMap() {
 		for(int i =0; i<row; i++) {
 		for(int j=0;j<col;j++) {
 			tile[i][j]= new Tile(0,TileHeight,TileWidth);
 			tile[i][j].setJ(j);
 			tile[i][j].setI(i);
+			tile[i][j].setHeight(TileHeight);
+			tile[i][j].setWidth(TileWidth);
 		}
 	}
 	}
@@ -34,11 +27,14 @@ public class TileMap {
 	public void drawBox(Graphics g) {
 		g.setColor(Color.BLUE);
 		for (int i=0;i<col;i++) {
-			g.drawLine(i*25, 0, i*25, col*25);
+			g.drawLine(i*TileWidth, 0, i*TileWidth, row*TileWidth);
 		}
 		for (int j=0;j<row;j++) {
-			g.drawLine(0, j*25, col*25, j*25);
+			g.drawLine(0, j*TileHeight, col*TileHeight, j*TileHeight);
 		}
+	}
+	public Tile[][] getTile() {
+		return tile;
 	}
 	public void draw(Graphics g) {
 		for(int i=0; i <row;i++) {
